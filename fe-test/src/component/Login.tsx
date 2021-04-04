@@ -8,7 +8,7 @@ interface StateLogin {
   formErrors: any
 }
 
-interface PropsLogin extends RouteComponentProps<any>{
+interface PropsLogin extends RouteComponentProps<any> {
 }
 
 class Login extends Component<PropsLogin, StateLogin>{
@@ -63,27 +63,26 @@ class Login extends Component<PropsLogin, StateLogin>{
     } else {
       this.setState({
         formErrors: ''
-    })
+      })
       const member = {
         username: this.state.username,
         password: this.state.password
-    };
-    axios.post('https://cyb06ylby6.execute-api.ap-southeast-1.amazonaws.com/v1/login', member)
+      };
+      axios.post('https://cyb06ylby6.execute-api.ap-southeast-1.amazonaws.com/v1/login', member)
         .then(res => {
-            console.log(res)
-            if(res.data.errors) {
-                this.setState({
-                    formErrors: res.data.errors
-                })
-            }else {
-                this.setState({
-                    formErrors: ''
-                })
-                localStorage.setItem("user", JSON.stringify(res.data))
-                this.props.history.push('/user')                             
-            }
-        })
-        .catch(error => console.log(error));
+            this.setState({
+              formErrors: ''
+            })
+            localStorage.setItem("user", JSON.stringify(res.data))
+            this.props.history.push('/user')
+          }
+        )
+        .catch(error => {
+          errorSubmit.login = "Incorrect password or username"
+          this.setState({ 
+              formErrors: errorSubmit
+            })
+        });
     }
   }
   renderError() {
@@ -93,7 +92,7 @@ class Login extends Component<PropsLogin, StateLogin>{
         {Object.keys(formErrors).map((fieldName, i) => {
           if (formErrors[fieldName].length > 0) {
             return (
-              <p key={i}>{fieldName}: {formErrors[fieldName]}</p>
+              <p key={i}>{formErrors[fieldName]}</p>
             )
           } else {
             return '';
