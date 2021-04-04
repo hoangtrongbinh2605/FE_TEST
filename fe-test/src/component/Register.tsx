@@ -106,7 +106,7 @@ class Register extends Component<PropsRegister, StateRegister>{
                 {Object.keys(formErrors).map((fieldName, i) => {
                     if (formErrors[fieldName].length > 0) {
                         return (
-                            <p key={i}>{fieldName}: {formErrors[fieldName]}</p>
+                            <p key={i}>{formErrors[fieldName]}</p>
                         )
                     } else {
                         return '';
